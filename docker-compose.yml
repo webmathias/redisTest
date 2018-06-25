@@ -1,0 +1,35 @@
+version: '3'
+services: 
+  redis:
+    image: redis:alpine
+    networks: 
+      - redis
+  client1:
+    image: node:alpine
+    volumes: 
+      - './:/app'
+    working_dir: '/app'
+    entrypoint: ['node', 'client']
+    networks: 
+      - redis
+  client2:
+    image: node:alpine
+    volumes: 
+      - './:/app'
+    working_dir: '/app'
+    entrypoint: ['node', 'client']
+    networks: 
+      - redis
+  server:
+    image: node:alpine
+    working_dir: '/app'
+    volumes: 
+      - './:/app'
+    entrypoint: ['node', 'sender']
+    networks: 
+      - redis
+networks:
+  redis:
+    internal: false
+  web:
+    driver: bridge
